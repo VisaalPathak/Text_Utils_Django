@@ -9,6 +9,7 @@ def home(request):
 def analyze(request):
     djtext = request.GET.get('text', 'default')
     rmpunc = request.GET.get('removepunc', 'off')
+    extraspacerm = request.GET.get('extraspacerm','off')
     punctuations = '''.,'":;[]{}()/|\<>!-_?*&@+'''
     analyzed_txt = ""
     if rmpunc == "on":
@@ -16,27 +17,17 @@ def analyze(request):
             if char not in punctuations:
                 analyzed_txt += char
         params = {"your_analyzer":"Removed Punctuations", "analyzed_txt": analyzed_txt}
-        print(params)
         return render(request, 'analyze.html', params)
+    
+    elif extraspacerm == "on":
+        analyzed_txt = ""
+        for i, char in enumerate(djtext):
+            if not(djtext[i] == " " and djtext[i+1] == " "):
+                analyzed_txt = analyzed_txt + char
+        params = {"your_analyzer":"Remove Extra Space", "analyzed_text": analyzed_txt}
+        return render(request, "analyze.html", params)
+
     else:
         return HttpResponse("Error")
-
-
-# def removepunc(request):
-#     text = request.GET.get('text', 'default')
-
-#     return HttpResponse("Puntuation Remover")
-
-# def spaceremover(request):
-#     return HttpResponse("Space Remover")
-
-# def capitalizeletter(request):
-#     return HttpResponse("Capitalize Letters")
-
-# def newlineremove(request):
-#     return HttpResponse("Newline remover")
-
-# def char_count(request):
-#     return HttpResponse("Character Counter")
 
 
