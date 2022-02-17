@@ -12,6 +12,7 @@ def analyze(request):
     extraspacerm = request.GET.get('extraspacerm','off')
     Uppercase = request.GET.get('Uppercase', 'off')
     newlinerm = request.GET.get('newlinerm', 'off')
+    charcount = request.GET.get('charcount', 'off')
     punctuations = '''.,'":;[]{}()/|\<>!-_?*&@+'''
     analyzed_txt = ""
     if rmpunc == "on":
@@ -41,6 +42,11 @@ def analyze(request):
         params = {"your_analyzer":"New Line Remover", "analyzed_txt": analyzed_txt}
         return render(request, "analyze.html", params)
 
+    elif charcount == "on":
+        countc = len(djtext)
+        analyzed_txt = f"Total characters entered is {countc}"
+        params = {"your_analyzer":"Character Counter", "analyzed_txt": analyzed_txt}
+        return render(request, "analyze.html", params)
     else:
         return HttpResponse("Error")
 
